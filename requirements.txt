@@ -1,0 +1,27 @@
+# --- Our deps ---
+
+git+https://github.com/hynekcer/beatbox-davisagli.git@python3
+git+https://github.com/Twistbioscience/django-salesforce.git@v0.7.6
+
+Django==1.10.7
+psycopg2==2.7.1
+
+djangorestframework==3.6.2
+django-rest-swagger==2.1.2
+celery==4.0.2
+redis==2.10.5
+logstash_formatter==0.5.16
+jsonfield==2.0.1
+django-filter==1.0.2
+djangorestframework_camel_case==0.2.0
+simple-salesforce==0.72.2
+django-jet==1.0.6
+gunicorn==19.7.1
+whitenoise==3.3.0
+django-redis==4.8.0
+gevent==1.2.2
+newrelic==2.96.0.80
+flower==0.9.2
+requests[security]==2.18.4
+django-extensions==1.7.9
+kombu==4.1.0
