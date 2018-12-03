@@ -1,7 +1,7 @@
 # --- Our deps ---
 
 git+https://github.com/hynekcer/beatbox-davisagli.git@python3
-git+https://github.com/Twistbioscience/django-salesforce.git@v0.7.6
+django-salesforce==0.7.2
 
 Django==1.10.7
 psycopg2==2.7.1

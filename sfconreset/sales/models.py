@@ -30,3 +30,53 @@ class Account(models.Model):
         db_table = 'Account'
         verbose_name = 'Account'
         verbose_name_plural = 'Accounts'
+
+
+class Contact(models.Model):
+    is_deleted = models.BooleanField(
+        verbose_name='Deleted', sf_read_only=models.READ_ONLY)
+    master_record = models.ForeignKey(
+        'self', models.DO_NOTHING, related_name='contact_masterrecord_set', sf_read_only=models.READ_ONLY, blank=True, null=True)
+    account = models.ForeignKey(Account, models.DO_NOTHING, blank=True, null=True,
+                                related_name='contacts', related_query_name='contact')  # Master Detail Relationship *
+    last_name = models.CharField(max_length=80)
+    first_name = models.CharField(max_length=40, blank=True, null=True)
+    salutation = models.CharField(max_length=40, choices=[('Mr.', 'Mr.'), ('Ms.', 'Ms.'), (
+        'Mrs.', 'Mrs.'), ('Dr.', 'Dr.'), ('Prof.', 'Prof.')], blank=True, null=True)
+    name = models.CharField(
+        max_length=121, verbose_name='Full Name', sf_read_only=models.READ_ONLY)
+    email = models.EmailField(blank=True, null=True)
+    used_by_e_commerce = models.BooleanField(
+        default=True, custom=True, db_column='Used_by_eCommerce__c', max_length=255, verbose_name='Used by eCommerce')
+
+
+class CustomVector(models.Model):
+    name = models.CharField(max_length=80, verbose_name='Custom Vector Name',
+                            default=models.DEFAULTED_ON_CREATE, blank=True, null=True)
+    date_approved = models.DateField(
+        custom=True, db_column='Date_approved__c', verbose_name='Date approved', blank=True, null=True)
+    mes_uid = models.CharField(custom=True, db_column='MES_UID__c',
+                               max_length=255, verbose_name='MES UID', blank=True, null=True)
+    type = models.CharField(custom=True, max_length=255, choices=[(
+        'Custom', 'Custom'), ('Catalog', 'Catalog')], blank=True, null=True)
+
+    class Meta(models.Model.Meta):
+        db_table = 'CustomVector__c'
+        verbose_name = 'Custom Vector'
+        verbose_name_plural = 'Customs Vectors'
+
+
+class CustomVectorForContact(models.Model):
+    is_deleted = models.BooleanField(
+        verbose_name='Deleted', sf_read_only=models.READ_ONLY)
+    name = models.CharField(
+        max_length=80, verbose_name='Custom Vector for contacts Name', sf_read_only=models.READ_ONLY)
+    contact = models.ForeignKey(Contact, models.DO_NOTHING, related_name="vectors_for_contact",
+                                custom=True, sf_read_only=models.NOT_UPDATEABLE)  # Master Detail Relationship 0
+    vector = models.ForeignKey(CustomVector, models.DO_NOTHING,
+                               related_name="contacts_for_vector", db_column='CustomVector__c', custom=True)
+
+    class Meta(models.Model.Meta):
+        db_table = 'CustomVectorforcontacts__c'
+        verbose_name = 'Custom Vector for contacts'
+        verbose_name_plural = 'Custom Vectors for contacts'

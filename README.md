@@ -1,29 +1,38 @@
 # sfproject
 
-clone this repo
+1. clone this repo
+    ```
+    git clone https://github.com/noamby/sfproject.git
+    ```
 
-    $ git clone https://github.com/noamby/sfproject.git
+2. enter the project's folder sfproject
+    ```
+    cd sfproject
+    ```
+
+3. start virtual env with python 3.6
+    ```
+    virtualenv -p python3.6 .venv
+    ```
     
-enter the project's folder sfproject
+4. activate the virtual env
+    ```
+    source .venv/bin/activate
+    ```
 
-    $ cd sfproject
+5. install requirements
+    ```
+    pip install -r requirements.txt
+    ```
     
-start virtual env with python 3.6
-
-    $ virtualenv -p python3.6 .venv
+6. enter the project folder sfconreset
+    ```
+    cd sfconreset
+    ```
     
-activate the virtual env
-
-    $ source .venv/bin/activate
-
-install requirements
-
-    $ pip install -r requirements.txt
+7. copy env.sh to your terminal window with parameters
     
-enter the project folder sfconreset
-
-    $ cd sfconreset
-    
-start celery until you see the error
-
-    $ celery -A sfconreset worker -l info -B
+8. start celery until you see the error
+    ```
+    celery -A sfconreset worker -l error -B -c20
+    ```
