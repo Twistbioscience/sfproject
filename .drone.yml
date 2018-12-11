@@ -1,0 +1,21 @@
+pipeline:
+  docker:
+    image: plugins/docker:latest
+    registry: docker.twistbioscience-staging.com
+    repo: docker.twistbioscience-staging.com/sfconreset
+    tag:
+      - "1.0.${DRONE_BUILD_NUMBER}.${DRONE_COMMIT_BRANCH}"
+      - "${DRONE_COMMIT_BRANCH}"
+      - "latest"
+    force_tag: true
+    file: Dockerfile
+    secrets: [ docker_username, docker_password, docker_email ]
+    when:
+      branch: [ master]
+
+  git_tags:
+    image: docker.twistbioscience-staging.com/drone_tags
+    pull: true
+    git_tag: "1.0.${DRONE_BUILD_NUMBER}.${DRONE_COMMIT_BRANCH}"
+    when:
+      branch: [ master ]
