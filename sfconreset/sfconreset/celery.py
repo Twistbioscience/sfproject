@@ -15,9 +15,9 @@ app = Celery('sfconreset')
 app.conf.broker_url = os.getenv('BROKER_URL', 'redis://localhost/')
 app.conf.result_backend = os.getenv('RESULT_BACKEND', 'redis://localhost/')
 app.conf.beat_schedule = {
-    'poll every %s seconds ' % str(1): {
+    'poll every %s seconds ' % str(10): {
         'task': 'sales.tasks.repeat_query_calls',
-        'schedule': float(1),
+        'schedule': float(10),
         'args': (),
     },
 }
