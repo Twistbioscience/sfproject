@@ -1,0 +1,25 @@
+version: '3.5'
+services:
+
+  sfconreset:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - VAULT_USER
+      - VAULT_PASSWORD
+    command: celery -A sfconreset worker -l info -B -c20
+    depends_on:
+      - redis
+    networks:
+      - tapi_network
+
+  redis:
+    image: redis:3.2.9-alpine
+    networks:
+      - tapi_network
+
+networks:
+  tapi_network:
+    external: false
+
