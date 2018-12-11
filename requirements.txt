@@ -5,7 +5,7 @@ django-salesforce==0.7.2
 
 Django==1.10.7
 psycopg2==2.7.1
-
+hvac==0.2.17
 djangorestframework==3.6.2
 django-rest-swagger==2.1.2
 celery==4.0.2

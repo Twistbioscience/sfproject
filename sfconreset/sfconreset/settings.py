@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import hvac
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -75,6 +76,13 @@ WSGI_APPLICATION = 'sfconreset.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
+VAULT_USER = os.environ['VAULT_USER']
+VAULT_PASSWORD = os.environ['VAULT_PASSWORD']
+VAULT_CLIENT_TIMEOUT = int(os.getenv('VAULT_CLIENT_TIMEOUT', '30'))
+vault_client = hvac.Client(url='https://vault.twistbioscience-staging.com', timeout=VAULT_CLIENT_TIMEOUT)
+vault_client.auth_userpass(VAULT_USER, VAULT_PASSWORD)
+VAULT_ENV = vault_client.read('secret/twist-api-{}'.format('staging'))['data']
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -83,11 +91,11 @@ DATABASES = {
     'salesforce': {
         'ENGINE': 'salesforce.backend',
         'NAME': 'salesforce',
-        'CONSUMER_KEY': os.environ.get('SALESFORCE_CONSUMER_KEY'),
-        'CONSUMER_SECRET': os.environ.get('SALESFORCE_CONSUMER_SECRET'),
-        'USER': os.environ.get('SALESFORCE_USER'),
-        'PASSWORD': os.environ.get('SALESFORCE_PASSWORD'),
-        'HOST': os.environ.get('SALESFORCE_HOST'),
+        'CONSUMER_KEY': VAULT_ENV['SALESFORCE_CONSUMER_KEY'],
+        'CONSUMER_SECRET': VAULT_ENV['SALESFORCE_CONSUMER_SECRET'],
+        'USER': VAULT_ENV['SALESFORCE_USER'],
+        'PASSWORD': VAULT_ENV['SALESFORCE_PASSWORD'],
+        'HOST': VAULT_ENV['SALESFORCE_HOST'],
         'CONN_MAX_AGE': 3600,
     },
 }
