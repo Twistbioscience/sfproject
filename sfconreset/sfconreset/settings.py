@@ -142,3 +142,8 @@ STATIC_URL = '/static/'
 DATABASE_ROUTERS = [
     "salesforce.router.ModelRouter",
 ]
+
+
+CELERY_BROKER_URL = os.getenv('BROKER_URL', 'redis://redis/')
+CELERY_RESULT_BACKEND = os.getenv('RESULT_BACKEND', 'redis://redis/')
+
