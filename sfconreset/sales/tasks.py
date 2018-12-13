@@ -9,13 +9,15 @@ import logging
 
 log = logging.getLogger(__name__)
 
+RESULT_LIMIT = 50
 
 @shared_task
 def repeat_query_calls():
     try:
-        for x in CustomVectorForContact.objects.all():
-            obj_cv = CustomVector.objects.get(id=x.vector.id)
-            obj_c = Contact.objects.get(id=x.contact.id)
+        log.info('Scriptush: Starting custom vector query')
+        for custom_vector in CustomVectorForContact.objects.all()[:RESULT_LIMIT]:
+            obj_cv = CustomVector.objects.get(id=custom_vector.vector.id)
+            obj_c = Contact.objects.get(id=custom_vector.contact.id)
             obj_a = Account.objects.get(id=obj_c.account.id)
     except OSError as e:
-        log.error("Stopped process, Connection error thrown {}".format(e))
+        log.error('Scriptush: Stopped process, OSError was thrown {}'.format(e))
