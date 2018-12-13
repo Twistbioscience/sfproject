@@ -1,17 +1,21 @@
 pipeline:
   docker:
-    image: plugins/docker:latest
+    image: joshdvir/drone-docker-bash
+    deamon_off: true
     registry: docker.twistbioscience-staging.com
     repo: docker.twistbioscience-staging.com/sfconreset
-    tag:
+    tags:
       - "1.0.${DRONE_BUILD_NUMBER}.${DRONE_COMMIT_BRANCH}"
       - "${DRONE_COMMIT_BRANCH}"
       - "latest"
     force_tag: true
-    file: Dockerfile
+    keep: 4
+    dockerfile: Dockerfile
     secrets: [ docker_username, docker_password, docker_email ]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     when:
-      branch: [ master]
+      branch: [ master ]
 
   git_tags:
     image: docker.twistbioscience-staging.com/drone_tags
